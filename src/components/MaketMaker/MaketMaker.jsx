@@ -1,10 +1,10 @@
 import { nanoid } from 'nanoid'
 import React from 'react'
 import { Layer, Stage } from 'react-konva'
-import './App.css'
-import BackgroundImage from './components/BackgroundImage'
-import LayoutImage from './components/LayoutImage'
-import ResizableImage from './components/ResizableImage'
+import './MaketMaker.css'
+import BackgroundImage from './BackgroundImage'
+import LayoutImage from './LayoutImage'
+import ResizableImage from './ResizableImage'
 
 const settings = {
   initialResizeImage: {
@@ -13,7 +13,7 @@ const settings = {
   },
 }
 
-function App() {
+export default function MaketMaker({ onExport, backgroundImage, layoutImage }) {
   const [stageWidth, setStageWidth] = React.useState(0)
   const [stageHeight, setStageHeight] = React.useState(0)
   const [selectedId, selectShape] = React.useState(null)
@@ -122,6 +122,7 @@ function App() {
         y: file.y,
       })),
     ]
+    onExport(exported)
   }
   React.useEffect(() => {
     if (!isExporting) return
@@ -182,13 +183,18 @@ function App() {
           style={{ border: '1px solid black' }}
         >
           <Layer layerName='background'>
-            <BackgroundImage width={stageWidth} height={stageHeight} />
+            <BackgroundImage
+              width={stageWidth}
+              height={stageHeight}
+              imageUrl={backgroundImage}
+            />
           </Layer>
           <Layer layerName='resizableImages'>
             <LayoutImage
               name='bg'
               setStageHeight={setStageHeight}
               setStageWidth={setStageWidth}
+              imageUrl={layoutImage}
             />
             {files.map((file, i) => {
               return (
@@ -221,5 +227,3 @@ function App() {
     </div>
   )
 }
-
-export default App
